@@ -8,21 +8,59 @@
     <title>My Drive</title>
 </head>
 <body>
-    <button id = "btnAddFolder">Add Folder</button>
-    <div id = "divBreadCrumb">
-        <a class="path" fid="-1">Root</a>
+    <div class="main">
+        <div class="left">
+            <button id = "btnAddFolder">New</button>
+            <div class="myDrive selected">
+                <img src="Images/drive.png">
+                MyDrive
+            </div>
+            <div class="star">
+                <img src="Images/star.png">
+                Starred
+            </div>
+            <div class="trash">
+                <img src="Images/dustbin.png">
+                Trash
+            </div>
+        </div>
+        <div class="right">
+            <div class="search">
+                <input type="text" class="searchBar">
+                <img src="Images/search.png">
+            </div>
+            <div id = "divBreadCrumb">
+                <a class="path" fid="-1">Root</a>
+            </div>
+            <div id = "divContainer"></div>
+        </div>
     </div>
-    <div id = "divContainer"></div>
+
+    <div class="addFolder">
+        <h2>New Folder</h2>
+        <input type="text" id="name" value="Untitled Folder">
+        <div class="btn">
+            <button class="cancel">Cancel</button>
+            <button class="create">Create</button>
+        </div>
+    </div>
 
     <template id="pageTemplates">
         <div class="folder">
-            <span action="edit">edit</span>
-            <span action="delete">delete</span>
-            <span action="view">view</span>
+            <div class="options">
+                <img src="Images/options.png">
+            </div>
+            <div class="more" style="display: none;">
+                <div action="edit">Edit</div>
+                <div action="delete">Delete</div>
+                <div action="Star">Star</div>
+            </div>
             <div purpose="name"></div>
+    
         </div>
         <a class="path"></a>
     </template>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,9 +1,42 @@
-#btnAddFolder {
-    border-radius: 5px;
-    background-color: azure;
+/* ***************************************** Main Div ********************************************** */
+.main{
+    display: flex;
+}
+
+.left{
     width: 200px;
-    margin-left: 600px;
+}
+
+.left>*{
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+
+img{
+    height: 20px;
+    margin-right: 10px;
+    /* margin: 2px; */
+}
+
+.myDrive:hover,.star:hover,.trash:hover{
+    background-color: rgb(245,245,245);
+}
+
+.selected{
+    background-color: rgb(232,240,254);
+}
+/* ****************************************  Add Folder Button ****************************************************** */
+
+#btnAddFolder {
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 2px 6px;
+    width: 100px;
+    /* margin-left: 600px; */
     padding: 20px;
+    border-radius: 30%;
     cursor: pointer;
 }
 
@@ -11,30 +44,52 @@
     transform: scale(1.02);
 }
 
+/* ******************************************** Search Bar *********************************************************** */
+.search{
+    margin: 10px;
+}
+
+.searchBar{
+    background-color: lightgray;
+    width: 600px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+}
+
+/* ***************************************** Bread Crumb ************************************************************* */
+
 #divBreadCrumb {
-    border: 1px solid black;
+    border-bottom: 1px solid black;
     display: flex;
     margin-top: 10px;
     margin-bottom: 10px;
+    padding-bottom: 10px;
+    width: calc(100vw - 250px);
 }
 
 .path{
-    background-color: gray;
-    color: black;
+    /* background-color: gray; */
+    border-radius: 5px;
+    /* color: black; */
     cursor: pointer;
     padding: 5px;
-    border-right: 3px solid black;
+    font-size: larger;
+    /* border-right: 3px solid black; */
 }
 
 .path:hover{
-    background-color: white;
-    color: blue;
-    text-decoration: underline;
+    background-color: lightgray;
+    /* color: blue; */
+    /* text-decoration: underline; */
 }
 
+/* ************************************************  Div Container *************************************************************** */
+
 #divContainer {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
+    flex-wrap: wrap;
     margin-top: 10px;
 }
 
@@ -56,4 +111,56 @@ div[purpose=name]{
     margin-top: 50px;
     color: white;
     word-wrap: break-word;
+}
+
+/************************* New Folder *******************************************/
+.addFolder{
+    position: absolute;
+    left: 40vw;
+    top: 40vh;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    display: none;
+    background-color: white;
+}
+
+.options{
+    margin-left: 100px;
+}
+
+#name{
+    width: 220px;
+}
+
+h2{
+    margin: 5px;
+}
+
+.btn{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.btn>*{
+    margin: 5px;
+}
+
+.more{
+    position: absolute;
+    /* left: 100px; */
+    margin-left: 140px;
+    margin-top: -30px;
+    border: 1px solid;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+}
+
+.more>*{
+    margin-bottom: 10px;
 }
