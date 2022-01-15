@@ -13,7 +13,7 @@
     padding: 10px;
 }
 
-img{
+.myDrive>img,.star>img,.trash>img{
     height: 20px;
     margin-right: 10px;
     /* margin: 2px; */
@@ -25,6 +25,10 @@ img{
 
 .selected{
     background-color: rgb(232,240,254);
+}
+
+.search>img{
+    height: 20px;
 }
 /* ****************************************  Add Folder Button ****************************************************** */
 
@@ -47,6 +51,7 @@ img{
 /* ******************************************** Search Bar *********************************************************** */
 .search{
     margin: 10px;
+    /* margin-top: 10px; */
 }
 
 .searchBar{
@@ -78,6 +83,12 @@ img{
     /* border-right: 3px solid black; */
 }
 
+.arrow{
+    padding: 5px;
+    font-size: larger;
+    cursor:default;
+}
+
 .path:hover{
     background-color: lightgray;
     /* color: blue; */
@@ -94,12 +105,16 @@ img{
 }
 
 .folder {
-    background-color: teal;
+    /* background-color: teal; */
     border-radius: 5px;
-    height: 100px;
-    width: 120px;
+    /* height: 100px; */
+    /* width: 120px; */
     padding: 10px;
-    margin: 10px;
+    /* margin: 10px; */
+}
+
+.folder > img{
+    height: 80px;
 }
 
 .folder [action]{
@@ -108,9 +123,14 @@ img{
 }
 
 div[purpose=name]{
-    margin-top: 50px;
-    color: white;
-    word-wrap: break-word;
+    /* margin-top: 50px; */
+    /* color: white; */
+    margin-left: 10px;
+    /* word-wrap: break-word; */
+    overflow: hidden;
+    width: 60px;
+    cursor:default;
+    text-align: center;
 }
 
 /************************* New Folder *******************************************/
@@ -147,11 +167,11 @@ h2{
     margin: 5px;
 }
 
-.more{
+.more, .more1{
     position: absolute;
     /* left: 100px; */
-    margin-left: 140px;
-    margin-top: -30px;
+    margin-left: 50px;
+    margin-top: -50px;
     border: 1px solid;
     padding: 10px;
     display: flex;
@@ -161,6 +181,6 @@ h2{
     background-color: white;
 }
 
-.more>*{
+.more>*, .more1>*{
     margin-bottom: 10px;
 }

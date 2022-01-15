@@ -30,7 +30,7 @@
                 <img src="Images/search.png">
             </div>
             <div id = "divBreadCrumb">
-                <a class="path" fid="-1">Root</a>
+                <a class="path" rid="-1">Root</a>
             </div>
             <div id = "divContainer"></div>
         </div>
@@ -47,18 +47,21 @@
 
     <template id="pageTemplates">
         <div class="folder">
-            <div class="options">
-                <img src="Images/options.png">
-            </div>
+            <img src="Images/folder.png">
             <div class="more" style="display: none;">
                 <div action="edit">Edit</div>
                 <div action="delete">Delete</div>
-                <div action="Star">Star</div>
+                <div action="star">Star</div>
+            </div>
+            <div class="more1" style="display: none;">
+                <div action="restore">Restore</div>
+                <div action="remove">Delete</div>
             </div>
             <div purpose="name"></div>
     
         </div>
         <a class="path"></a>
+        <a class="arrow">></a>
     </template>
 
     <script src="script.js"></script>
