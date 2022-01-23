@@ -21,6 +21,11 @@
     let name1 = document.querySelector("#name1");
     let newBtn = document.querySelector("#New");
     let newMenu = document.querySelector("#newMenu")
+    
+    let divAppTitle = document.querySelector("#app-title");
+    let divAppMenuBar = document.querySelector("#app-menu-bar");
+    let divAppBody = document.querySelector("#app-body");
+
     let rid = -1;
     let crid = -1;      // ID of the folder in which we are
     let untitledFolder = 1;
@@ -111,6 +116,7 @@
     btnAddFile.addEventListener("click",addFile);
     aRootPath.addEventListener("click", navigateBreadcrumb);
     
+    // ********************************************** Folder *****************************************************************
     function addFolder(){
         body.style.opacity = 0.5;
         newFolder.style.display = "block";
@@ -157,7 +163,7 @@
         newFolder.style.display = "none";
     })
     
-    function editFolder(){
+    function renameFolder(){
         let divFolder = this.parentNode.parentNode;
         let divName = divFolder.querySelector("[purpose='name']");
         let orname = divName.innerHTML;
@@ -377,7 +383,7 @@
         Divdelete.addEventListener("click", deleteFolder);
 
         let Divedit = divFolder.querySelector("div[action='edit']");
-        Divedit.addEventListener("click", editFolder);
+        Divedit.addEventListener("click", renameFolder);
 
         let Divstar = divFolder.querySelector("div[action='star']");
         Divstar.addEventListener("click", starFolder);
@@ -393,6 +399,7 @@
         divContainer.appendChild(divFolder);
     }
 
+    // ************************************************ File ***********************************************
     function addFile(){
         body.style.opacity = 0.5;
         newFile.style.display = "block";
@@ -421,9 +428,17 @@
                     pid: crid,
                     rtype: "file",
                     isStar: false,
-                    istrash: false
+                    istrash: false,
+                    isBold: true,
+                    isItalic: false,
+                    isUnderline: false,
+                    bgColor: "#000000",
+                    textColor: "#FFFFFF",
+                    fontFamily: "cursive",
+                    fontSize: 22,
+                    content: "I am a new file."
                 });
-                console.log(crid);
+                // console.log(crid);
                 addFileInPage(rname, rid, crid);
                 persistresourcesToStorage();
             
@@ -497,7 +512,7 @@
         this.parentNode.style.display = "none";
     }
 
-    function editFile(){
+    function renameFile(){
         let divFile = this.parentNode.parentNode;
         let divName = divFile.querySelector("[purpose='name']");
         let orname = divName.innerHTML;
@@ -555,6 +570,125 @@
        
     }
 
+    function viewFile(){
+        let spanView = this;
+        let divTextFile = spanView.parentNode;
+        let divName = divTextFile.querySelector("[purpose=name]");
+        let fname = divName.innerHTML;
+        let fid = parseInt(divTextFile.getAttribute("rid"));
+
+        let divNotepadMenuTemplate = pageTemplates.content.querySelector("[purpose=notepad-menu]");
+        let divNotepadMenu = document.importNode(divNotepadMenuTemplate, true);
+        divAppMenuBar.innerHTML = "";
+        divAppMenuBar.appendChild(divNotepadMenu);
+
+        let divNotepadBodyTemplate = pageTemplates.content.querySelector("[purpose=notepad-body]");
+        let divNotepadBody = document.importNode(divNotepadBodyTemplate, true);
+        divAppBody.innerHTML = "";
+        divAppBody.appendChild(divNotepadBody);
+
+        divAppTitle.innerHTML = fname;
+        divAppTitle.setAttribute("rid", fid);
+
+        let spanSave = divAppMenuBar.querySelector("[action=save]");
+        let spanBold = divAppMenuBar.querySelector("[action=bold]");
+        let spanItalic = divAppMenuBar.querySelector("[action=italic]");
+        let spanUnderline = divAppMenuBar.querySelector("[action=underline]");
+        let inputBGColor = divAppMenuBar.querySelector("[action=bg-color]");
+        let inputTextColor = divAppMenuBar.querySelector("[action=fg-color]");
+        let selectFontFamily = divAppMenuBar.querySelector("[action=font-family]");
+        let selectFontSize = divAppMenuBar.querySelector("[action=font-size]");
+        let spanDownload = divAppMenuBar.querySelector("[action=download]");
+        let inputUpload = divAppMenuBar.querySelector("[action=upload]");
+        let spanForUpload = divAppMenuBar.querySelector("[action=forupload]");
+        let textArea = divAppBody.querySelector("textArea");
+
+        spanSave.addEventListener("click", saveNotepad);
+        spanBold.addEventListener("click", makeNotepadBold);
+        spanItalic.addEventListener("click", makeNotepadItalic);
+        spanUnderline.addEventListener("click", makeNotepadUnderline);
+        inputBGColor.addEventListener("change", changeNotepadBGColor);
+        inputTextColor.addEventListener("change", changeNotepadTextColor);
+        selectFontFamily.addEventListener("change", changeNotepadFontFamily);
+        selectFontSize.addEventListener("change", changeNotepadFontSize);
+        spanDownload.addEventListener("click", downloadNotepad);
+        inputUpload.addEventListener("change", uploadNotepad);
+        spanForUpload.addEventListener("click", ()=>{
+            inputUpload.click();
+        })
+
+        let resource = resources.find(r => r.id == fid);
+        spanBold.setAttribute("pressed", !resource.isBold);
+        spanItalic.setAttribute("pressed", !resource.isItalic);
+        spanUnderline.setAttribute("pressed", !resource.isUnderline);
+        inputBGColor.value = resource.bgColor;
+        inputTextColor.value = resource.textColor;
+        selectFontFamily.value = resource.fontFamily;
+        selectFontSize.value = resource.fontSize;
+        textArea.value = resource.content;
+
+        spanBold.dispatchEvent(new Event("click"));
+        spanItalic.dispatchEvent(new Event("click"));
+        spanUnderline.dispatchEvent(new Event("click"));
+        inputBGColor.dispatchEvent(new Event("change"));
+        inputTextColor.dispatchEvent(new Event("change"));
+        selectFontFamily.dispatchEvent(new Event("change"));
+        selectFontSize.dispatchEvent(new Event("change"));
+    }
+
+    function downloadNotepad(){
+        let fid = parseInt(divAppTitle.getAttribute("rid"));
+        let resource = resources.find(r => r.id == fid);
+        let divNotepadMenu = this.parentNode;
+        
+        let strForDownload = JSON.stringify(resource);
+        let encodedData = encodeURIComponent(strForDownload);
+        
+        let aDownload = divNotepadMenu.querySelector("a[purpose=download]");
+        aDownload.setAttribute("href", "data:text/json; charset=utf-8, " + encodedData);
+        aDownload.setAttribute("download", resource.name + ".json");
+
+        aDownload.click();
+    }
+
+    function uploadNotepad(){
+        let file = window.event.target.files[0]; 
+        let reader = new FileReader();
+        reader.addEventListener("load", function(){
+            let data = window.event.target.result;
+            let resource = JSON.parse(data);
+
+            let spanBold = divAppMenuBar.querySelector("[action=bold]");
+            let spanItalic = divAppMenuBar.querySelector("[action=italic]");
+            let spanUnderline = divAppMenuBar.querySelector("[action=underline]");
+            let inputBGColor = divAppMenuBar.querySelector("[action=bg-color]");
+            let inputTextColor = divAppMenuBar.querySelector("[action=fg-color]");
+            let selectFontFamily = divAppMenuBar.querySelector("[action=font-family]");
+            let selectFontSize = divAppMenuBar.querySelector("[action=font-size]");
+            let textArea = divAppBody.querySelector("textArea");
+
+            spanBold.setAttribute("pressed", !resource.isBold);
+            spanItalic.setAttribute("pressed", !resource.isItalic);
+            spanUnderline.setAttribute("pressed", !resource.isUnderline);
+            inputBGColor.value = resource.bgColor;
+            inputTextColor.value = resource.textColor;
+            selectFontFamily.value = resource.fontFamily;
+            selectFontSize.value = resource.fontSize;
+            textArea.value = resource.content;
+
+            spanBold.dispatchEvent(new Event("click"));
+            spanItalic.dispatchEvent(new Event("click"));
+            spanUnderline.dispatchEvent(new Event("click"));
+            inputBGColor.dispatchEvent(new Event("change"));
+            inputTextColor.dispatchEvent(new Event("change"));
+            selectFontFamily.dispatchEvent(new Event("change"));
+            selectFontSize.dispatchEvent(new Event("change"));
+        })
+
+        reader.readAsText(file);
+        
+    }
+
     function addFileInPage(rname, rid, pid){
         let ridx = resources.findIndex(f => f.id == rid);
         if(divBreadCrumb.innerText != "Trash"){     
@@ -601,7 +735,7 @@
         Divdelete.addEventListener("click", deleteFile);
 
         let Divedit = divFile.querySelector("div[action='edit']");
-        Divedit.addEventListener("click", editFile);
+        Divedit.addEventListener("click", renameFile);
 
         let Divstar = divFile.querySelector("div[action='star']");
         Divstar.addEventListener("click", starFile);
@@ -612,12 +746,97 @@
         let DivRemove = divFile.querySelector("div[action='remove']");
         DivRemove.addEventListener("click", removeFile);
 
-        // img.addEventListener("dblclick", viewFile)
-
+        img.addEventListener("dblclick", viewFile);
 
         divContainer.appendChild(divFile);
     }
 
+    function makeNotepadBold(){ 
+        let textArea = divAppBody.querySelector("textArea");
+        let isPressed = this.getAttribute("pressed") == "true";
+        if(isPressed == false){
+            this.setAttribute("pressed", true);
+            textArea.style.fontWeight = "bold";
+        } else {
+            this.setAttribute("pressed", false);
+            textArea.style.fontWeight = "normal";
+        }
+    }
+
+    function makeNotepadItalic(){ 
+        let textArea = divAppBody.querySelector("textArea");
+        let isPressed = this.getAttribute("pressed") == "true";
+        if(isPressed == false){
+            this.setAttribute("pressed", true);
+            textArea.style.fontStyle = "italic";
+        } else {
+            this.setAttribute("pressed", false);
+            textArea.style.fontStyle = "normal";
+        }
+    }
+
+    function makeNotepadUnderline(){ 
+        let textArea = divAppBody.querySelector("textArea");
+        let isPressed = this.getAttribute("pressed") == "true";
+        if(isPressed == false){
+            this.setAttribute("pressed", true);
+            textArea.style.textDecoration = "underline";
+        } else {
+            this.setAttribute("pressed", false);
+            textArea.style.textDecoration = "none";
+        }
+    }
+
+    function changeNotepadBGColor(){ 
+        let color = this.value;
+        let textArea = divAppBody.querySelector("textArea");
+        textArea.style.backgroundColor = color;
+    }
+
+    function changeNotepadTextColor(){ 
+        let color = this.value;
+        let textArea = divAppBody.querySelector("textArea");
+        textArea.style.color = color;
+    }
+
+    function changeNotepadFontFamily(){ 
+        let fontFamily = this.value;
+        let textArea = divAppBody.querySelector("textArea");
+        textArea.style.fontFamily = fontFamily;
+    }
+
+    function changeNotepadFontSize(){ 
+        let fontSize = this.value;
+        let textArea = divAppBody.querySelector("textArea");
+        textArea.style.fontSize = fontSize + "px";
+    }
+
+    function saveNotepad(){ 
+        let fid = parseInt(divAppTitle.getAttribute("rid"));
+        let resource = resources.find(r => r.id == fid);
+
+        let spanBold = divAppMenuBar.querySelector("[action=bold]");
+        let spanItalic = divAppMenuBar.querySelector("[action=italic]");
+        let spanUnderline = divAppMenuBar.querySelector("[action=underline]");
+        let inputBGColor = divAppMenuBar.querySelector("[action=bg-color]");
+        let inputTextColor = divAppMenuBar.querySelector("[action=fg-color]");
+        let selectFontFamily = divAppMenuBar.querySelector("[action=font-family]");
+        let selectFontSize = divAppMenuBar.querySelector("[action=font-size]");
+        let textArea = divAppBody.querySelector("textArea");
+
+        resource.isBold = spanBold.getAttribute("pressed") == "true";
+        resource.isItalic = spanItalic.getAttribute("pressed") == "true";
+        resource.isUnderline = spanUnderline.getAttribute("pressed") == "true";
+        resource.bgColor = inputBGColor.value;
+        resource.textColor = inputTextColor.value;
+        resource.fontFamily = selectFontFamily.value;
+        resource.fontSize = selectFontSize.value;
+        resource.content = textArea.value;
+
+        persistresourcesToStorage();
+    }
+
+    // ********************************** Storage **********************************************************
     function persistresourcesToStorage(){
         let fjson = JSON.stringify(resources);
         localStorage.setItem("data", fjson);
