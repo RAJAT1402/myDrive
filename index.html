@@ -10,7 +10,11 @@
 <body>
     <div class="main">
         <div class="left">
-            <button id = "btnAddFolder">New</button>
+            <button id = "New">New</button>
+            <div id="newMenu">
+                <button id = "btnAddFolder">New Folder</button>
+                <button id = "btnAddFile">New File</button>
+            </div>
             <div class="myDrive selected">
                 <img src="Images/drive.png">
                 MyDrive
@@ -40,10 +44,20 @@
         <h2>New Folder</h2>
         <input type="text" id="name" value="Untitled Folder">
         <div class="btn">
-            <button class="cancel">Cancel</button>
-            <button class="create">Create</button>
+            <button class="cancelFolder">Cancel</button>
+            <button class="createFolder">Create</button>
         </div>
     </div>
+
+    <div class="addFile">
+        <h2>New File</h2>
+        <input type="text" id="name1" value="Untitled File">
+        <div class="btn">
+            <button class="cancelFile">Cancel</button>
+            <button class="createFile">Create</button>
+        </div>
+    </div>
+
 
     <template id="pageTemplates">
         <div class="folder">
@@ -58,7 +72,19 @@
                 <div action="remove">Delete</div>
             </div>
             <div purpose="name"></div>
-    
+        </div>
+        <div class="file">
+            <img src="Images/folder2.png">
+            <div class="more" style="display: none;">
+                <div action="edit">Edit</div>
+                <div action="delete">Delete</div>
+                <div action="star">Star</div>
+            </div>
+            <div class="more1" style="display: none;">
+                <div action="restore">Restore</div>
+                <div action="remove">Delete</div>
+            </div>
+            <div purpose="name"></div>
         </div>
         <a class="path"></a>
         <a class="arrow">></a>

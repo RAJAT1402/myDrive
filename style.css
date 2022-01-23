@@ -32,7 +32,7 @@
 }
 /* ****************************************  Add Folder Button ****************************************************** */
 
-#btnAddFolder {
+#New {
     margin-top: 20px;
     border-radius: 5px;
     background-color: white;
@@ -44,9 +44,25 @@
     cursor: pointer;
 }
 
-#btnAddFolder:hover {
+#New:hover {
     transform: scale(1.02);
 }
+
+#newMenu{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 15px;
+    left: 110px;
+    background-color: #fff;
+    border: 1px solid black;
+    display: none;
+}
+
+#newMenu>*{
+    margin: 5px;
+}
+
 
 /* ******************************************** Search Bar *********************************************************** */
 .search{
@@ -104,37 +120,28 @@
     margin-top: 10px;
 }
 
-.folder {
-    /* background-color: teal; */
-    border-radius: 5px;
-    /* height: 100px; */
-    /* width: 120px; */
-    padding: 10px;
-    /* margin: 10px; */
-}
-
 .folder > img{
     height: 80px;
 }
 
-.folder [action]{
-    text-decoration: underline;
-    cursor: pointer;
+.file > img{
+    height: 80px;
 }
+
 
 div[purpose=name]{
     /* margin-top: 50px; */
     /* color: white; */
     margin-left: 10px;
     /* word-wrap: break-word; */
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 60px;
     cursor:default;
-    text-align: center;
+    /* text-align: center; */
 }
 
 /************************* New Folder *******************************************/
-.addFolder{
+.addFolder,.addFile{
     position: absolute;
     left: 40vw;
     top: 40vh;
